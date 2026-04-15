@@ -1,624 +1,859 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emotional Support Human License — Maroua</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap');
-
-  :root {
-    --pink: #FF3CAC;
-    --purple: #784BA0;
-    --blue: #2B86C5;
-    --cyan: #00c9ff;
-    --bg: #0d0d12;
-    --surface: #14141c;
-    --surface2: #1c1c28;
-    --border: rgba(255,255,255,0.07);
-    --text: #f0eeff;
-    --muted: rgba(240,238,255,0.45);
-    --accent: #c084fc;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    min-height: 100vh;
-    padding: 2.5rem 1rem 4rem;
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  /* background grain + glow */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background:
-      radial-gradient(ellipse 60% 50% at 20% 10%, rgba(255,60,172,0.12) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(43,134,197,0.10) 0%, transparent 55%),
-      radial-gradient(ellipse 40% 40% at 50% 50%, rgba(120,75,160,0.07) 0%, transparent 60%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .wrap {
-    max-width: 720px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ---- HEADER ---- */
-  .header {
-    text-align: center;
-    margin-bottom: 2rem;
-    animation: fadeUp 0.7s ease both;
-  }
-
-  .badge-row {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-
-  .badge {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 99px;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .badge-pink { background: rgba(255,60,172,0.18); color: #ff8dd4; border: 1px solid rgba(255,60,172,0.3); }
-  .badge-blue { background: rgba(43,134,197,0.18); color: #7ec8f5; border: 1px solid rgba(43,134,197,0.3); }
-  .badge-purple { background: rgba(120,75,160,0.22); color: #c4a0f0; border: 1px solid rgba(120,75,160,0.35); }
-
-  h1 {
-    font-family: 'Instrument Serif', serif;
-    font-size: clamp(28px, 6vw, 48px);
-    font-weight: 400;
-    font-style: italic;
-    line-height: 1.15;
-    background: linear-gradient(90deg, #FF3CAC, #a78bfa, #2B86C5, #00c9ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    margin-bottom: 0.5rem;
-  }
-
-  .issuer {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-    margin-bottom: 4px;
-  }
-
-  .valid-line {
-    font-size: 12px;
-    color: rgba(192,132,252,0.7);
-    font-style: italic;
-  }
-
-  /* ---- DIVIDER ---- */
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    margin: 1.5rem 0;
-  }
-
-  /* ---- RECIPIENT ---- */
-  .recipient-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    animation: fadeUp 0.7s 0.1s ease both;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .recipient-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #FF3CAC, #784BA0, #2B86C5);
-  }
-
-  .certifies-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 8px;
-  }
-
-  .name-block {
-    font-family: 'Instrument Serif', serif;
-    font-size: 32px;
-    font-style: italic;
-    background: linear-gradient(90deg, #FF3CAC, #a78bfa);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1.2;
-    margin-bottom: 4px;
-  }
-
-  .aka {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 1rem;
-    font-style: italic;
-  }
-
-  .level-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(192,132,252,0.12);
-    border: 1px solid rgba(192,132,252,0.25);
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 13px;
-    color: #c4a0f0;
-    margin-bottom: 10px;
-  }
-
-  .specialization {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .specialization span {
-    color: #7ec8f5;
-  }
-
-  /* ---- CLAUSES ---- */
-  .clauses-grid {
-    display: grid;
-    gap: 12px;
-    margin-bottom: 1.25rem;
-  }
-
-  .clause {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1rem 1.25rem;
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    animation: fadeUp 0.6s ease both;
-  }
-
-  .clause:hover {
-    transform: translateY(-2px);
-    border-color: rgba(255,255,255,0.14);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-  }
-
-  .clause-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 9px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 6px;
-  }
-
-  .clause-title {
-    font-size: 13px;
-    font-weight: 600;
-    margin-bottom: 6px;
-    letter-spacing: 0.01em;
-  }
-
-  .clause p, .clause-body {
-    font-size: 14px;
-    color: rgba(240,238,255,0.75);
-    line-height: 1.65;
-  }
-
-  .clause ol {
-    padding-left: 1.1rem;
-    font-size: 14px;
-    color: rgba(240,238,255,0.75);
-    line-height: 1.8;
-  }
-
-  .clause ul {
-    list-style: none;
-    padding: 0;
-    font-size: 13px;
-    font-family: 'DM Mono', monospace;
-    color: rgba(240,238,255,0.75);
-    line-height: 1.9;
-  }
-
-  .clause ul li::before { content: '→ '; color: var(--accent); }
-
-  /* clause accent colors */
-  .c1 { --cl: #FF3CAC; }
-  .c2 { --cl: #00c9ff; }
-  .c3 { --cl: #a78bfa; }
-  .c4 { --cl: #34d399; }
-  .c5 { --cl: #fb923c; }
-
-  .clause { border-left: 3px solid var(--cl, var(--border)); }
-  .clause-label { color: var(--cl, var(--accent)); }
-  .clause-title { color: var(--cl, var(--text)); }
-
-  .clause:nth-child(1) { animation-delay: 0.15s; }
-  .clause:nth-child(2) { animation-delay: 0.22s; }
-  .clause:nth-child(3) { animation-delay: 0.29s; }
-  .clause:nth-child(4) { animation-delay: 0.36s; }
-  .clause:nth-child(5) { animation-delay: 0.43s; }
-
-  /* ---- INTERACTIVE ---- */
-  .interactive-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    text-align: center;
-    animation: fadeUp 0.7s 0.5s ease both;
-  }
-
-  .interactive-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 12px;
-  }
-
-  .deploy-btn {
-    background: linear-gradient(135deg, #FF3CAC, #784BA0, #2B86C5);
-    color: white;
-    border: none;
-    border-radius: 99px;
-    padding: 12px 28px;
-    font-family: 'Syne', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 0 4px 20px rgba(255,60,172,0.25);
-    letter-spacing: 0.01em;
-  }
-
-  .deploy-btn:hover {
-    transform: scale(1.04);
-    box-shadow: 0 6px 28px rgba(255,60,172,0.4);
-  }
-
-  .deploy-btn:active { transform: scale(0.97); }
-
-  .cat-msg {
-    margin-top: 1rem;
-    min-height: 52px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .cat-msg-text {
-    font-family: 'DM Mono', monospace;
-    font-size: 14px;
-    color: #c4a0f0;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.35s ease, transform 0.35s ease;
-  }
-
-  .cat-msg-text.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .cat-ascii {
-    font-size: 22px;
-    opacity: 0;
-    transition: opacity 0.35s 0.1s ease;
-  }
-  .cat-ascii.show { opacity: 1; }
-
-  /* ---- SEAL ---- */
-  .seal-row {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 1.5rem;
-    animation: fadeUp 0.7s 0.6s ease both;
-  }
-
-  .seal-label {
-    font-size: 11px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* ---- SIGNATURE ---- */
-  .sig-card {
-    background: linear-gradient(135deg, rgba(255,60,172,0.07), rgba(120,75,160,0.07), rgba(43,134,197,0.07));
-    border: 1px solid rgba(120,75,160,0.25);
-    border-radius: 20px;
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    animation: fadeUp 0.7s 0.65s ease both;
-  }
-
-  .sig-note {
-    font-size: 13px;
-    color: var(--muted);
-    text-align: center;
-    margin-bottom: 1.25rem;
-    font-style: italic;
-  }
-
-  .sig-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .sig-field { text-align: center; }
-
-  .sig-line {
-    height: 40px;
-    border-bottom: 1.5px solid rgba(255,255,255,0.15);
-    margin-bottom: 6px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    padding-bottom: 5px;
-  }
-
-  .sig-value {
-    font-family: 'Instrument Serif', serif;
-    font-style: italic;
-    font-size: 15px;
-    color: var(--accent);
-  }
-
-  .sig-caption {
-    font-size: 11px;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-  }
-
-  /* ---- FOOTER ---- */
-  .footer {
-    text-align: center;
-    animation: fadeUp 0.7s 0.75s ease both;
-  }
-
-  .footer-heart {
-    font-family: 'Instrument Serif', serif;
-    font-size: 17px;
-    font-style: italic;
-    color: rgba(240,238,255,0.7);
-    margin-bottom: 12px;
-    line-height: 1.6;
-  }
-
-  .fine-print {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    line-height: 1.8;
-  }
-
-  .fine-print strong { color: rgba(240,238,255,0.5); }
-
-  /* ---- ANIMATIONS ---- */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(18px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-</style>
-</head>
-<body>
-<div class="wrap">
-
-  <!-- HEADER -->
-  <div class="header">
-    <div class="badge-row">
-      <span class="badge badge-pink">Officially Certified</span>
-      <span class="badge badge-blue">Legally Valid (emotionally)</span>
-      <span class="badge badge-purple">International Cat Council™</span>
-    </div>
-    <h1>Emotional Support<br>Human License</h1>
-    <p class="issuer">Issued under the authority of the International Cat Council™</p>
-    <p class="valid-line">Valid in all iktchi2ab-related emergencies</p>
-  </div>
-
-  <div class="divider"></div>
-
-  <!-- RECIPIENT -->
-  <div class="recipient-card">
-    <div class="certifies-label">This document certifies that:</div>
-    <div class="name-block">Maroua</div>
-    <div class="aka">also known as <em>Marwow</em> when wow, <em>Marmeh</em> when meh</div>
-    <div class="level-tag">⭐ Level 5 Emotional Support Human</div>
-    <div style="margin-bottom: 10px;"></div>
-    <div class="specialization">
-      Specialized in: <span>emotional debugging</span>, <span>meme deployment</span>, and <span>cutting the bs when needed</span>
-    </div>
-  </div>
-
-  <!-- CLAUSES -->
-  <div class="clauses-grid">
-
-    <div class="clause c1">
-      <div class="clause-label">Clause I</div>
-      <div class="clause-title">The Meme Obligation</div>
-      <p>Must send at least one (1) cat meme during iktchi2ab episodes. Failure to comply may result in increased dramatic behavior.</p>
-    </div>
-
-    <div class="clause c2">
-      <div class="clause-label">Clause II</div>
-      <div class="clause-title">Emotional Debugging</div>
-      <p style="margin-bottom: 8px;">Authorized to say:</p>
-      <ul>
-        <li>"cut the bs"</li>
-        <li>"your brain is glitching again"</li>
-        <li>"drink water and reset"</li>
-      </ul>
-    </div>
-
-    <div class="clause c3">
-      <div class="clause-label">Clause III</div>
-      <div class="clause-title">Emergency Protocol</div>
-      <p style="margin-bottom: 8px;">In case of emotional instability:</p>
-      <ol>
-        <li>Receive message</li>
-        <li>Respond like a decent human</li>
-        <li>Deploy "miw wiiiiw" energy</li>
-        <li>Optional: escalate to premium cat content</li>
-      </ol>
-    </div>
-
-    <div class="clause c4">
-      <div class="clause-label">Clause IV</div>
-      <div class="clause-title">The Presence Clause</div>
-      <p>Being there counts.<br>
-      Even silence counts.<br>
-      Even "miw wiiiiw" counts.</p>
-    </div>
-
-    <div class="clause c5">
-      <div class="clause-label">Clause V</div>
-      <div class="clause-title">Enforcement</div>
-      <p>Bad days do not void this license. System automatically restarts. No guilt allowed. Ever.</p>
-    </div>
-
-  </div>
-
-  <!-- INTERACTIVE -->
-  <div class="interactive-card">
-    <div class="interactive-label">Emergency Protocol — Manual Trigger</div>
-    <button class="deploy-btn" onclick="deployCat()">🚨 Deploy Emergency Cat</button>
-    <div class="cat-msg">
-      <div class="cat-ascii" id="catAscii"></div>
-      <div class="cat-msg-text" id="catMsgText"></div>
-    </div>
-  </div>
-
-  <!-- SEAL -->
-  <div class="seal-row">
-    <svg width="64" height="56" viewBox="0 0 64 56" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="8,18 16,2 24,18" fill="#784BA0"/>
-      <polygon points="11,17 16,6 21,17" fill="#c084fc"/>
-      <polygon points="40,18 48,2 56,18" fill="#784BA0"/>
-      <polygon points="43,17 48,6 53,17" fill="#c084fc"/>
-      <ellipse cx="32" cy="32" rx="24" ry="22" fill="#1c1c28"/>
-      <ellipse cx="32" cy="32" rx="24" ry="22" fill="none" stroke="#784BA0" stroke-width="1.5"/>
-      <ellipse cx="22" cy="30" rx="8" ry="9" fill="#2a1a40"/>
-      <ellipse cx="42" cy="30" rx="8" ry="9" fill="#2a1a40"/>
-      <ellipse cx="22" cy="27" rx="5" ry="5.5" fill="#f0eeff"/>
-      <ellipse cx="42" cy="27" rx="5" ry="5.5" fill="#f0eeff"/>
-      <ellipse cx="23" cy="27" rx="3" ry="4" fill="#1a0a2e"/>
-      <ellipse cx="43" cy="27" rx="3" ry="4" fill="#1a0a2e"/>
-      <circle cx="24" cy="26" r="1.2" fill="white"/>
-      <circle cx="44" cy="26" r="1.2" fill="white"/>
-      <polygon points="32,33 29.5,36 34.5,36" fill="#FF3CAC"/>
-      <path d="M29.5,36 Q32,39 34.5,36" stroke="#a78bfa" stroke-width="1" fill="none"/>
-      <line x1="6" y1="32" x2="26" y2="34" stroke="#784BA0" stroke-width="1"/>
-      <line x1="6" y1="36" x2="26" y2="36" stroke="#784BA0" stroke-width="1"/>
-      <line x1="6" y1="40" x2="26" y2="38" stroke="#784BA0" stroke-width="1"/>
-      <line x1="58" y1="32" x2="38" y2="34" stroke="#784BA0" stroke-width="1"/>
-      <line x1="58" y1="36" x2="38" y2="36" stroke="#784BA0" stroke-width="1"/>
-      <line x1="58" y1="40" x2="38" y2="38" stroke="#784BA0" stroke-width="1"/>
-    </svg>
-    <div class="seal-label">Official Cat Seal of Approval 🐾</div>
-  </div>
-
-  <!-- SIGNATURE -->
-  <div class="sig-card">
-    <p class="sig-note">Signed with sincerity and questionable legal authority</p>
-    <div class="sig-grid">
-      <div class="sig-field">
-        <div class="sig-line">
-          <span class="sig-value">Kenza</span>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Emotional Support Human License — Maroua</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700&display=swap");
+
+      :root {
+        --pink: #ff3cac;
+        --purple: #784ba0;
+        --blue: #2b86c5;
+        --cyan: #00c9ff;
+        --bg: #0d0d12;
+        --surface: #14141c;
+        --surface2: #1c1c28;
+        --border: rgba(255, 255, 255, 0.07);
+        --text: #f0eeff;
+        --muted: rgba(240, 238, 255, 0.45);
+        --accent: #c084fc;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Syne", sans-serif;
+        min-height: 100vh;
+        padding: 2.5rem 1rem 4rem;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* background grain + glow */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 60% 50% at 20% 10%,
+            rgba(255, 60, 172, 0.12) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 50% 40% at 80% 80%,
+            rgba(43, 134, 197, 0.1) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 50% 50%,
+            rgba(120, 75, 160, 0.07) 0%,
+            transparent 60%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ---- HEADER ---- */
+      .header {
+        text-align: center;
+        margin-bottom: 2rem;
+        animation: fadeUp 0.7s ease both;
+      }
+
+      .badge-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: 99px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .badge-pink {
+        background: rgba(255, 60, 172, 0.18);
+        color: #ff8dd4;
+        border: 1px solid rgba(255, 60, 172, 0.3);
+      }
+      .badge-blue {
+        background: rgba(43, 134, 197, 0.18);
+        color: #7ec8f5;
+        border: 1px solid rgba(43, 134, 197, 0.3);
+      }
+      .badge-purple {
+        background: rgba(120, 75, 160, 0.22);
+        color: #c4a0f0;
+        border: 1px solid rgba(120, 75, 160, 0.35);
+      }
+
+      h1 {
+        font-family: "Instrument Serif", serif;
+        font-size: clamp(28px, 6vw, 48px);
+        font-weight: 400;
+        font-style: italic;
+        line-height: 1.15;
+        background: linear-gradient(90deg, #ff3cac, #a78bfa, #2b86c5, #00c9ff);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 0.5rem;
+      }
+
+      .issuer {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.04em;
+        margin-bottom: 4px;
+      }
+
+      .valid-line {
+        font-size: 12px;
+        color: rgba(192, 132, 252, 0.7);
+        font-style: italic;
+      }
+
+      /* ---- DIVIDER ---- */
+      .divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+        margin: 1.5rem 0;
+      }
+
+      /* ---- RECIPIENT ---- */
+      .recipient-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        animation: fadeUp 0.7s 0.1s ease both;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .recipient-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #ff3cac, #784ba0, #2b86c5);
+      }
+
+      .certifies-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 8px;
+      }
+
+      .name-block {
+        font-family: "Instrument Serif", serif;
+        font-size: 32px;
+        font-style: italic;
+        background: linear-gradient(90deg, #ff3cac, #a78bfa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+        margin-bottom: 4px;
+      }
+
+      .aka {
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 1rem;
+        font-style: italic;
+      }
+
+      .level-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(192, 132, 252, 0.12);
+        border: 1px solid rgba(192, 132, 252, 0.25);
+        border-radius: 8px;
+        padding: 6px 14px;
+        font-size: 13px;
+        color: #c4a0f0;
+        margin-bottom: 10px;
+      }
+
+      .specialization {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+        font-family: "DM Mono", monospace;
+      }
+
+      .specialization span {
+        color: #7ec8f5;
+      }
+
+      /* ---- CLAUSES ---- */
+      .clauses-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two equal columns */
+        grid-template-rows: repeat(3, auto); /* Three rows */
+        gap: 12px; /* Gap between grid items */
+        margin-bottom: 1.25rem;
+      }
+      .clause {
+        grid-column: span 1; /* Each clause spans one column */
+        grid-row: span 1; /* Each clause spans one row */
+
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 1rem 1.25rem;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+        animation: fadeUp 0.6s ease both;
+      }
+      .clause:nth-child(5) {
+        grid-row: span 2; /* The last clause spans two rows */
+      }
+
+      .clause:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .clause-label {
+        font-family: "DM Mono", monospace;
+        font-size: 9px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 6px;
+      }
+
+      .clause-title {
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+        letter-spacing: 0.01em;
+      }
+
+      .clause p,
+      .clause-body {
+        font-size: 14px;
+        color: rgba(240, 238, 255, 0.75);
+        line-height: 1.65;
+      }
+
+      .clause ol {
+        padding-left: 1.1rem;
+        font-size: 14px;
+        color: rgba(240, 238, 255, 0.75);
+        line-height: 1.8;
+      }
+
+      .clause ul {
+        list-style: none;
+        padding: 0;
+        font-size: 13px;
+        font-family: "DM Mono", monospace;
+        color: rgba(240, 238, 255, 0.75);
+        line-height: 1.9;
+      }
+
+      .clause ul li::before {
+        content: "→ ";
+        color: var(--accent);
+      }
+
+      /* clause accent colors */
+      .c1 {
+        --cl: #ff3cac;
+      }
+      .c2 {
+        --cl: #00c9ff;
+      }
+      .c3 {
+        --cl: #a78bfa;
+      }
+      .c4 {
+        --cl: #34d399;
+      }
+      .c5 {
+        --cl: #fb923c;
+      }
+
+      .clause {
+        border-left: 3px solid var(--cl, var(--border));
+      }
+      .clause-label {
+        color: var(--cl, var(--accent));
+      }
+      .clause-title {
+        color: var(--cl, var(--text));
+      }
+
+      .clause:nth-child(1) {
+        animation-delay: 0.15s;
+      }
+      .clause:nth-child(2) {
+        animation-delay: 0.22s;
+      }
+      .clause:nth-child(3) {
+        animation-delay: 0.29s;
+      }
+      .clause:nth-child(4) {
+        animation-delay: 0.36s;
+      }
+      .clause:nth-child(5) {
+        animation-delay: 0.43s;
+      }
+
+      /* ---- INTERACTIVE ---- */
+      .interactive-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        text-align: center;
+        animation: fadeUp 0.7s 0.5s ease both;
+      }
+
+      .interactive-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 12px;
+      }
+
+      .deploy-btn {
+        background: linear-gradient(135deg, #ff3cac, #784ba0, #2b86c5);
+        color: white;
+        border: none;
+        border-radius: 99px;
+        padding: 12px 28px;
+        font-family: "Syne", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          opacity 0.15s ease,
+          box-shadow 0.15s ease;
+        box-shadow: 0 4px 20px rgba(255, 60, 172, 0.25);
+        letter-spacing: 0.01em;
+      }
+
+      .deploy-btn:hover {
+        transform: scale(1.04);
+        box-shadow: 0 6px 28px rgba(255, 60, 172, 0.4);
+      }
+
+      .deploy-btn:active {
+        transform: scale(0.97);
+      }
+
+      .cat-msg {
+        margin-top: 1rem;
+        min-height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .cat-msg-text {
+        font-family: "DM Mono", monospace;
+        font-size: 14px;
+        color: #c4a0f0;
+        opacity: 0;
+        transform: translateY(6px);
+        transition:
+          opacity 0.35s ease,
+          transform 0.35s ease;
+      }
+
+      .cat-msg-text.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .cat-ascii {
+        font-size: 22px;
+        opacity: 0;
+        transition: opacity 0.35s 0.1s ease;
+      }
+      .cat-ascii.show {
+        opacity: 1;
+      }
+
+      /* ---- SEAL ---- */
+      .seal-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 1.5rem;
+        animation: fadeUp 0.7s 0.6s ease both;
+      }
+
+      .seal-label {
+        font-size: 11px;
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+      }
+
+      /* ---- SIGNATURE ---- */
+      .sig-card {
+        background: linear-gradient(
+          135deg,
+          rgba(255, 60, 172, 0.07),
+          rgba(120, 75, 160, 0.07),
+          rgba(43, 134, 197, 0.07)
+        );
+        border: 1px solid rgba(120, 75, 160, 0.25);
+        border-radius: 20px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        animation: fadeUp 0.7s 0.65s ease both;
+      }
+
+      .sig-note {
+        font-size: 13px;
+        color: var(--muted);
+        text-align: center;
+        margin-bottom: 1.25rem;
+        font-style: italic;
+      }
+
+      .sig-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+      }
+
+      .sig-field {
+        text-align: center;
+      }
+
+      .sig-line {
+        height: 40px;
+        border-bottom: 1.5px solid rgba(255, 255, 255, 0.15);
+        margin-bottom: 6px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        padding-bottom: 5px;
+      }
+
+      .sig-value {
+        font-family: "Instrument Serif", serif;
+        font-style: italic;
+        font-size: 15px;
+        color: var(--accent);
+      }
+
+      .sig-caption {
+        font-size: 11px;
+        color: var(--muted);
+        font-family: "DM Mono", monospace;
+      }
+
+      /* ---- FOOTER ---- */
+      .footer {
+        text-align: center;
+        animation: fadeUp 0.7s 0.75s ease both;
+      }
+
+      .footer-heart {
+        font-family: "Instrument Serif", serif;
+        font-size: 17px;
+        font-style: italic;
+        color: rgba(240, 238, 255, 0.7);
+        margin-bottom: 12px;
+        line-height: 1.6;
+      }
+
+      .fine-print {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .fine-print strong {
+        color: rgba(240, 238, 255, 0.5);
+      }
+
+      /* ---- ANIMATIONS ---- */
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .cat-image-wrapper {
+        margin-top: 12px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .cat-image {
+        width: 50%;
+        max-height: 220px;
+        object-fit: cover;
+        border-radius: 14px;
+        opacity: 0;
+        transform: scale(0.96);
+        transition:
+          opacity 0.4s ease,
+          transform 0.4s ease;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+      }
+
+      .cat-image.show {
+        opacity: 1;
+        transform: scale(1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- HEADER -->
+      <div class="header">
+        <div class="badge-row">
+          <span class="badge badge-pink">Officially Certified</span>
+          <span class="badge badge-blue">Legally Valid (emotionally)</span>
+          <span class="badge badge-purple">International Cat Council™</span>
         </div>
-        <div class="sig-caption">The Undersigned (and grateful)</div>
+        <h1>Emotional Support<br />Human License</h1>
+        <p class="issuer">
+          Issued under the authority of the International Cat Council™
+        </p>
+        <p class="valid-line">Valid in all iktchi2ab-related emergencies</p>
       </div>
-      <div class="sig-field">
-        <div class="sig-line">
-          <span class="sig-value" style="color: #7ec8f5;">The Cat Council™</span>
+
+      <div class="divider"></div>
+
+      <!-- RECIPIENT -->
+      <div class="recipient-card">
+        <div class="certifies-label">This document certifies that:</div>
+        <div class="name-block">Maroua</div>
+        <div class="aka">
+          also known as <em>Marwow</em> when wow, <em>Marmeh</em> when meh
         </div>
-        <div class="sig-caption">Witness (unanimously meowing)</div>
+        <div class="level-tag">⭐ Level 5 Emotional Support Human</div>
+        <div style="margin-bottom: 10px"></div>
+        <div class="specialization">
+          Specialized in: <span>emotional debugging</span>,
+          <span>meme deployment</span>, and
+          <span>cutting the bs when needed</span>
+        </div>
+      </div>
+
+      <!-- CLAUSES -->
+      <div class="clauses-grid">
+        <div class="clause c1">
+          <div class="clause-label">Clause I</div>
+          <div class="clause-title">The Meme Obligation</div>
+          <p>
+            Must send at least one (1) cat meme during iktchi2ab episodes.
+            Failure to comply may result in increased dramatic behavior.
+          </p>
+        </div>
+
+        <div class="clause c2">
+          <div class="clause-label">Clause II</div>
+          <div class="clause-title">Emotional Debugging</div>
+          <p style="margin-bottom: 8px">Authorized to say:</p>
+          <ul>
+            <li>"cut the bs"</li>
+            <li>"your brain is glitching again"</li>
+            <li>"drink water and reset"</li>
+          </ul>
+        </div>
+
+        <div class="clause c3">
+          <div class="clause-label">Clause III</div>
+          <div class="clause-title">Emergency Protocol</div>
+          <p style="margin-bottom: 8px">In case of emotional instability:</p>
+          <ol>
+            <li>Receive message</li>
+            <li>Respond like a decent human</li>
+            <li>Deploy "miw wiiiiw" energy</li>
+            <li>Optional: escalate to premium cat content</li>
+          </ol>
+        </div>
+
+        <div class="clause c4">
+          <div class="clause-label">Clause IV</div>
+          <div class="clause-title">The Presence Clause</div>
+          <p>
+            Being there counts.<br />
+            Even silence counts.<br />
+            Even "miw wiiiiw" counts.
+          </p>
+        </div>
+
+        <div class="clause c5">
+          <div class="clause-label">Clause V</div>
+          <div class="clause-title">Enforcement</div>
+          <p>
+            Bad days do not void this license. System automatically restarts. No
+            guilt allowed. Ever.
+          </p>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE -->
+      <div class="interactive-card">
+        <div class="interactive-label">Emergency Protocol — Manual Trigger</div>
+        <button class="deploy-btn" onclick="deployCat()">
+          🚨 Deploy Emergency Cat
+        </button>
+        <div class="cat-msg">
+          <div class="cat-ascii" id="catAscii"></div>
+          <div class="cat-msg-text" id="catMsgText"></div>
+        </div>
+        <div class="cat-image-wrapper">
+          <img id="catImage" class="cat-image" src="" alt="cat meme" />
+        </div>
+      </div>
+
+      <!-- SEAL -->
+      <div class="seal-row">
+        <svg
+          width="64"
+          height="56"
+          viewBox="0 0 64 56"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <polygon points="8,18 16,2 24,18" fill="#784BA0" />
+          <polygon points="11,17 16,6 21,17" fill="#c084fc" />
+          <polygon points="40,18 48,2 56,18" fill="#784BA0" />
+          <polygon points="43,17 48,6 53,17" fill="#c084fc" />
+          <ellipse cx="32" cy="32" rx="24" ry="22" fill="#1c1c28" />
+          <ellipse
+            cx="32"
+            cy="32"
+            rx="24"
+            ry="22"
+            fill="none"
+            stroke="#784BA0"
+            stroke-width="1.5"
+          />
+          <ellipse cx="22" cy="30" rx="8" ry="9" fill="#2a1a40" />
+          <ellipse cx="42" cy="30" rx="8" ry="9" fill="#2a1a40" />
+          <ellipse cx="22" cy="27" rx="5" ry="5.5" fill="#f0eeff" />
+          <ellipse cx="42" cy="27" rx="5" ry="5.5" fill="#f0eeff" />
+          <ellipse cx="23" cy="27" rx="3" ry="4" fill="#1a0a2e" />
+          <ellipse cx="43" cy="27" rx="3" ry="4" fill="#1a0a2e" />
+          <circle cx="24" cy="26" r="1.2" fill="white" />
+          <circle cx="44" cy="26" r="1.2" fill="white" />
+          <polygon points="32,33 29.5,36 34.5,36" fill="#FF3CAC" />
+          <path
+            d="M29.5,36 Q32,39 34.5,36"
+            stroke="#a78bfa"
+            stroke-width="1"
+            fill="none"
+          />
+          <line
+            x1="6"
+            y1="32"
+            x2="26"
+            y2="34"
+            stroke="#784BA0"
+            stroke-width="1"
+          />
+          <line
+            x1="6"
+            y1="36"
+            x2="26"
+            y2="36"
+            stroke="#784BA0"
+            stroke-width="1"
+          />
+          <line
+            x1="6"
+            y1="40"
+            x2="26"
+            y2="38"
+            stroke="#784BA0"
+            stroke-width="1"
+          />
+          <line
+            x1="58"
+            y1="32"
+            x2="38"
+            y2="34"
+            stroke="#784BA0"
+            stroke-width="1"
+          />
+          <line
+            x1="58"
+            y1="36"
+            x2="38"
+            y2="36"
+            stroke="#784BA0"
+            stroke-width="1"
+          />
+          <line
+            x1="58"
+            y1="40"
+            x2="38"
+            y2="38"
+            stroke="#784BA0"
+            stroke-width="1"
+          />
+        </svg>
+        <div class="seal-label">Official Cat Seal of Approval 🐾</div>
+      </div>
+
+      <!-- SIGNATURE -->
+      <div class="sig-card">
+        <p class="sig-note">
+          Signed with sincerity and questionable legal authority
+        </p>
+        <div class="sig-grid">
+          <div class="sig-field">
+            <div class="sig-line">
+              <span class="sig-value">Kenza</span>
+            </div>
+            <div class="sig-caption">The Undersigned (and grateful)</div>
+          </div>
+          <div class="sig-field">
+            <div class="sig-line">
+              <span class="sig-value" style="color: #7ec8f5"
+                >The Cat Council™</span
+              >
+            </div>
+            <div class="sig-caption">Witness (unanimously meowing)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class="divider"></div>
+        <p class="footer-heart" style="margin-top: 1.25rem">
+          this is my way of saying:<br />you help more than you think.
+        </p>
+        <div class="fine-print">
+          <strong>Fine print:</strong> This license does not replace therapy,
+          but it does help.<br />
+          Side effects may include: slight comfort, reduced iktchi2ab,<br />and
+          random miw wiiiiw moments.
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- FOOTER -->
-  <div class="footer">
-    <div class="divider"></div>
-    <p class="footer-heart" style="margin-top: 1.25rem;">
-      this is my way of saying:<br>you help more than you think.
-    </p>
-    <div class="fine-print">
-      <strong>Fine print:</strong> This license does not replace therapy, but it does help.<br>
-      Side effects may include: slight comfort, reduced iktchi2ab,<br>and random miw wiiiiw moments.
-    </div>
-  </div>
+    <script>
+      const msgs = [
+        { text: "miw wiiiiw protocol activated 🐾", emoji: "🐈" },
+        {
+          text: "this is your sign to stop iktchi2ab (temporarily)",
+          emoji: "✨",
+        },
+        { text: "certified Marwow moment detected", emoji: "🌟" },
+        { text: "cut the bs and come back to earth", emoji: "🐾" },
+        {
+          text: "you are being emotionally supported. please wait.",
+          emoji: "⏳",
+        },
+        { text: "cat council is watching. drink water.", emoji: "🐱" },
+        {
+          text: "Marmeh state detected → applying softness patch",
+          emoji: "💜",
+        },
+        {
+          text: "rebooting your brain. estimated time: one meme.",
+          emoji: "🔄",
+        },
+        { text: "presence detected. iktchi2ab levels dropping.", emoji: "📉" },
+        { text: "miw wiiiiw. that's it. that's the message.", emoji: "🐾" },
+      ];
 
-</div>
+      let lastMsg = -1;
 
-<script>
-  const msgs = [
-    { text: "miw wiiiiw protocol activated 🐾", emoji: "🐈" },
-    { text: "this is your sign to stop iktchi2ab (temporarily)", emoji: "✨" },
-    { text: "certified Marwow moment detected", emoji: "🌟" },
-    { text: "cut the bs and come back to earth", emoji: "🐾" },
-    { text: "you are being emotionally supported. please wait.", emoji: "⏳" },
-    { text: "cat council is watching. drink water.", emoji: "🐱" },
-    { text: "Marmeh state detected → applying softness patch", emoji: "💜" },
-    { text: "rebooting your brain. estimated time: one meme.", emoji: "🔄" },
-    { text: "presence detected. iktchi2ab levels dropping.", emoji: "📉" },
-    { text: "miw wiiiiw. that's it. that's the message.", emoji: "🐾" },
-  ];
+      async function getNextCat() {
+        const res = await fetch(
+          "https://api.thecatapi.com/v1/images/search?mime_types=gif",
+        );
+        const data = await res.json();
+        return data[0]?.url || null;
+      }
 
-  let last = -1;
+      async function deployCat() {
+        let idx;
+        do {
+          idx = Math.floor(Math.random() * msgs.length);
+        } while (idx === lastMsg);
+        lastMsg = idx;
 
-  function deployCat() {
-    let idx;
-    do { idx = Math.floor(Math.random() * msgs.length); } while (idx === last);
-    last = idx;
+        const textEl = document.getElementById("catMsgText");
+        const asciiEl = document.getElementById("catAscii");
+        const imgEl = document.getElementById("catImage");
 
-    const textEl = document.getElementById('catMsgText');
-    const asciiEl = document.getElementById('catAscii');
+        textEl.textContent = "summoning chaotic cat...";
+        asciiEl.textContent = "🐾";
+        textEl.classList.add("show");
+        asciiEl.classList.add("show");
+        imgEl.classList.remove("show");
 
-    textEl.classList.remove('show');
-    asciiEl.classList.remove('show');
+        const url = await getNextCat();
+        if (!url) return;
 
-    setTimeout(() => {
-      textEl.textContent = msgs[idx].text;
-      asciiEl.textContent = msgs[idx].emoji;
-      textEl.classList.add('show');
-      asciiEl.classList.add('show');
-    }, 120);
-  }
-</script>
-</body>
+        const img = new Image();
+        img.src = url;
+        img.onload = () => {
+          imgEl.src = url;
+          textEl.textContent = msgs[idx].text;
+          asciiEl.textContent = msgs[idx].emoji;
+          imgEl.classList.add("show");
+        };
+      }
+    </script>
+  </body>
 </html>
