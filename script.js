@@ -3,6 +3,7 @@ const msgs = [
     { text: "stop the glitching, drink water.", emoji: "✨" },
     { text: "certified Marwow moment detected", emoji: "🌟" },
     { text: "rebooting brain... please wait.", emoji: "🔄" },
+        { text: "Cut the bs , come back on earth law sma7t.", emoji: "🔄" },
 ];
 
 async function deployCat() {
